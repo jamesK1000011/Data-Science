@@ -90,7 +90,7 @@ toupper(unique_region_list[[1]])
 unique_region_list = lapply(unique_region_list, toupper)
 unique_region_list
 ```
-# cretate a numeric list
+# create numeric list
 ```{r}
 numeric_list = list(first=-1, second =2, third=3, fourth = -4)
 
@@ -268,8 +268,7 @@ data(flights)
 #filter(NA_df, is.na(x) | x>= 1)
 ```
 
-# filter for only x values greater/equal to 1 (w/o NA) 
+# filter for only x values greater/equal to one (w/o NA) 
 ```{r}
 #filter(NA_df, x>= 1)
 ```
-
