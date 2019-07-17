@@ -90,7 +90,7 @@ toupper(unique_region_list[[1]])
 unique_region_list = lapply(unique_region_list, toupper)
 unique_region_list
 ```
-# cretate a numeric list
+# create a numeric list
 ```{r}
 numeric_list = list(first=-1, second =2, third=3, fourth = -4)
 
