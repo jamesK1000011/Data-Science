@@ -268,7 +268,7 @@ data(flights)
 #filter(NA_df, is.na(x) | x>= 1)
 ```
 
-# filter for only x values greater/equal to one (w/o NA) 
+# filter for nly x values greater/equal to one (w/o NA) 
 ```{r}
 #filter(NA_df, x>= 1)
 ```
