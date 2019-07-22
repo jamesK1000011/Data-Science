@@ -1,0 +1,205 @@
+---
+title: "Intro to R_D5"
+output:
+  html_document:
+    df_print: paged
+---
+# Set RNotebook for Root Directory
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "~/Desktop/af-werx/data")
+```
+
+
+# Set Working Directory
+```{r}
+setwd("~/Desktop/af-werx")
+```
+
+# Getting working Directory
+```{r}
+getwd()
+```
+
+# creating and setting the working directory
+```{r}
+main_dir = "~/Desktop/af-werx"
+data_dir = paste0(main_dir, "/data")
+data_dir
+plot_dir = paste0(main_dir, "/plots")
+plot_dir
+setwd(data_dir)
+getwd()
+```
+
+```{r}
+#load("tidyr_tables.RData")
+flights = nycflights13::flights
+
+```
+# Static Plot Example
+```{r}
+plot(c(1,4,6,7,8,11,44,66))
+```
+# read data from data sample
+```{r}
+CMP = read.csv("ChemicalManufacturingProcess.csv", header =  T, stringsAsFactors = F)
+```
+# take a look at the data
+```{r}
+#View(CMP)
+```
+
+```{r}
+column_ids = c(1:4,14:16)
+column_ids
+```
+# display column ids and first few variables
+```{r}
+CMP_subset = CMP[,column_ids]
+str(CMP_subset)
+```
+
+```{r}
+summary(CMP_subset$Yield)
+```
+# display a simple boxplot
+```{r}
+boxplot(CMP_subset$Yield)
+```
+# make it orange and give it a name
+```{r}
+boxplot(CMP_subset$Yield, col= "orange", main ="Yield Summary")
+```
+# display color names range 1:6
+```{r}
+colors()[1:6]
+```
+ 
+
+ # display color help and examples
+```{r}
+?colors
+demo(colors)
+```
+# get random set of color set
+```{r}
+set.seed(2)
+n_cols = ncol(CMP_subset)
+col_sample = sample(colors(), n_cols)
+col_sample
+```
+# use colors in boxplot
+```{r}
+boxplot(CMP_subset, col = col_sample)
+```
+# display histogram data without plotting
+```{r}
+hist(CMP_subset$Yield, plot = F)
+```
+# plotting histogram with vector of sample colors with x-axis and title changed
+```{r}
+hist(CMP_subset$Yield, col=col_sample[1:3], xlab = "Yield", main = "Dist. of Yield" )
+```
+# using par(mfrow = c(x,x)) to designate the the layout of the below histograms
+```{r}
+par(mfrow = c(1,2))
+hist(CMP_subset$BiologicalMaterial01, col=col_sample[2], xlab = "Bio Material 1", main = "Dist. of Bio Material 1")
+hist(CMP_subset$BiologicalMaterial02, col=col_sample[3], xlab = "Bio Material 2", main = "Dist. of Bio Material 2")
+```
+# display three histograms in dataframe view of 1 row, 3  columns
+```{r}
+par(mfrow = c(1,3))
+hist(CMP_subset$BiologicalMaterial01, col=col_sample[2], xlab = "Bio Material 1", main = "Dist. of Bio Material 1")
+hist(CMP_subset$BiologicalMaterial02, col=col_sample[3], xlab = "Bio Material 2", main = "Dist. of Bio Material 2")
+hist(CMP_subset$BiologicalMaterial03, col=col_sample[4], xlab = "Bio Material 3", main = "Dist. of Bio Material 3")
+```
+# creat plot with pch title, x/y-axis lables, and pch symbol mod with 2x enlargement, color =steelblue
+```{r}
+plot(CMP_subset[,2],CMP_subset[,1], xlab = "Bio Material 1", ylab = "Yield", main = "Bio. Material 1 vs Yield",pch = 4, cex = 2, col ="steelblue")
+```
+# correlation matrix for quick analysis
+```{r}
+pairs(CMP_subset[,1:4], pch=19, col="steelblue")
+```
+# install/load  corrlot package
+```{r}
+#install.packages("corrplot")
+library(corrplot)
+library(help="corrplot")
+```
+# chart a corrplot on std deviation of 1
+```{r}
+CMP_cor = cor(CMP_subset[,1:4])
+#View(CMP_cor)
+```
+# render it with a change in vis method
+```{r}
+corrplot(CMP_cor, method = "pie")
+```
+# display mixed corrplot
+```{r}
+corrplot.mixed(CMP_cor)
+```
+
+```{r}
+#install.packages("ggplot2")
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+?ggplot2
+```
+
+```{r}
+ggp1 = ggplot(CMP_subset, aes(x=Yield))
+ggp1
+```
+# Layered geom_histogram with binwidth 0.75, outline/fill color
+```{r}
+ggp1 = ggp1 + geom_histogram(aes(y= ..density..), binwidth = 0.75, color="steelblue", fill="gray")
+```
+# layer density on top of histogram
+```{r}
+ggp1 = ggp1 + geom_density(alpha=.5, color="gray", fill="steelblue")
+ggp1  
+```
+# using labs function to add title and subtitle
+```{r}
+ggp1 = ggp1 + labs(title="Distrobution", subtitle="Histogram & Density")
+ggp1
+```
+
+```{r}
+ggp2 = ggplot(CMP_subset, aes(x=BiologicalMaterial01, y=Yield))
+ggp2
+```
+
+```{r}
+ggp2 = ggp2 + geom_point()
+ggp2
+```
+
+```{r}
+ggp2 = ggp2 +
+  geom_point(color="darkorange")+
+  geom_smooth(method = lm)+
+  labs(title="Bio. Material 1 vs Yield", subtitle = "Scatterplot with linear fit")
+ggp2
+```
+
+```{r}
+ggtheme1 = theme_bw() + theme(axis.title = element_text(size = 20),
+                            axis.text = element_text(size = 16), 
+                            plot.title = element_text(size = 25), 
+                            plot.subtitle = element_text(size = 18))
+```
+
+```{r}
+ggp2 = ggp2 + ggtheme1
+ggp2
+```
+
