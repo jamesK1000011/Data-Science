@@ -6,4 +6,4 @@
 
 [Grouping, Summarizing, Mutate, ect.](http://htmlpreview.github.io/?https://github.com/jamesK1000011/RModule/blob/master/Intro-to-R_D4.html)
 
-[Visuals in Data](https://github.com/jamesK1000011/RModule/blob/master/data/Intro-to-R_D5.html)
+[Visuals in Data](http://htmlpreview.github.io/?https://github.com/jamesK1000011/RModule/blob/master/data/Intro-to-R_D5.html)
