@@ -1,6 +1,8 @@
 ---
 title: "Intro to R_D6"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 # Set RNotebook for Root Directory
 ```{r setup, include=FALSE, echo=FALSE}
@@ -66,7 +68,7 @@ my_ggtheme = theme_bw() +
 
 ```{r}
 # Set working directory to where we store data.
-setwd(data_dir)
+#setwd(data_dir)
 
 # Read CSV file called 
 #"ChemicalManufacturingProcess.csv".
@@ -74,7 +76,7 @@ CMP =
   read.csv("ChemicalManufacturingProcess.csv",
            header = TRUE)
 # View CMP dataset in the tabular data explorer.
-View(CMP)
+#View(CMP)
 ```
 
 
@@ -490,7 +492,7 @@ dev.off()            #<- clear graphics device
 
 ```{r}
 # Install `highcharter` package.
-install.packages("highcharter")
+#install.packages("highcharter")
 
 # Load the library.
 library(highcharter)
