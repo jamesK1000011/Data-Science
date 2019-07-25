@@ -1,0 +1,74 @@
+install.packages("jsonlite")
+shiny::runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+# Load the CMP datasetinput$variable
+CMP = read.csv("ChemicalManufacturingProcess.csv",
+header = TRUE, stringsAsFactors = FALSE)
+setwd("~/Desktop/af-werx/data")
+# Load the CMP datasetinput$variable
+CMP = read.csv("ChemicalManufacturingProcess.csv",
+header = TRUE, stringsAsFactors = FALSE)
+hist(CMP$Yield)
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+?hist
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+runApp('~/Desktop/af-werx/shiny/day-2/3-scatter_and_summary')
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+?wellPanel
+install.packages('rsconnect')
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='<SECRET>')
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='<SECRET>')
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='<SECRET>')
+library(rsconnect)
+deployApp()
+runApp('~/Desktop/af-werx/shiny/day-2/8-layout-app')
+setwd("~/Desktop/af-werx/shiny/day-2/8-layout-app")
+deployApp()
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='<SECRET>')
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='<SECRET>')
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='<SECRET>')
+rsconnect::setAccountInfo(name='s28kiru',
+token='BB75ED54398EEC5F260B2D4C8C3413AF',
+secret='1Mk6pz0uuJ+g8Jy+LLS7l4Fre6Hb/c7a94u1aqRj')
+setwd("~/Desktop/af-werx/shiny/day-2/8-layout-app")
+deployApp()
+shiny::runApp('~/Desktop/af-werx/shiny/day-2/1-histogram')
+rsconnect::setAccountInfo(name='s28kiru',
+token='45A26CE63A50513D099662A72A66C9A1',
+secret='UrYVNV207qEeJJZRPc1AatryVY39WZQ/IyJ2f1lb')
+setwd("~/Desktop/af-werx/shiny/day-2/1-histogram")
+deployApp()
+deployApp()
+library(rsconnect)
+deployApp()
+rsconnect::showLogs()
+setwd("~/Desktop/af-werx/shiny/day-2/9-deploying-app")
+deployApp()
+runApp('~/Desktop/af-werx/shiny/day-2/1-histogram')
+getwd()
+deployApp()
+rsconnect::showLogs()
+?rsconnect
+setwd("~/Desktop/af-werx/shiny/day-2/9-deploying-app")
+rsconnect::setAccountInfo(name='test001user',
+token='960CB3093F44F60F00A51445A1899B90',
+secret='G0kyfpUbpC/J+3s5kF06IyDW7Ye2K2La1lK+DQ79')
+rsconnect::setAccountInfo(name='test001user',
+token='960CB3093F44F60F00A51445A1899B90',
+secret='G0kyfpUbpC/J+3s5kF06IyDW7Ye2K2La1lK+DQ79')
