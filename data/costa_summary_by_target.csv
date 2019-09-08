@@ -1,0 +1,11 @@
+Target,metric,mean
+False,ppl_total,4.358607132827857
+True,ppl_total,3.7965310206804537
+False,dependency_rate,26.011232799775343
+True,dependency_rate,25.42528352234823
+False,num_adults,2.3880932322381354
+True,num_adults,2.713809206137425
+False,rooms,4.533838809323224
+True,rooms,5.205970647098066
+False,age,31.31423757371525
+True,age,36.0788859239493

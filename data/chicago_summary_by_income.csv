@@ -1,0 +1,13 @@
+,per_capita_income,metric,mean
+0,0,percent_house_crowded,6.288000000000004
+1,1,percent_house_crowded,2.478571428571428
+2,0,percent_house_below_poverty,26.78000000000001
+3,1,percent_house_below_poverty,12.739285714285712
+4,0,percent_16_unemployed,18.81
+5,1,percent_16_unemployed,9.14642857142857
+6,0,percent_25_without_diploma,26.092000000000002
+7,1,percent_25_without_diploma,10.042857142857144
+8,0,percent_dependent,38.83399999999999
+9,1,percent_dependent,30.15357142857143
+10,0,hardship_index,66.64
+11,1,hardship_index,18.910946196660483
