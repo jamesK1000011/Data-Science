@@ -1,0 +1,217 @@
+---
+title: "Intro to R_D4"
+output:
+  html_document:
+    df_print: paged
+---
+# Set RNotebook for Root Directory
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "~/Desktop/af-werx/data")
+```
+
+
+# Set Working Directory
+```{r}
+setwd("~/Desktop/af-werx")
+```
+
+# Getting working Directory
+```{r}
+getwd()
+```
+
+# creating and setting the working directory
+```{r}
+main_dir = "~/Desktop/af-werx"
+data_dir = paste0(main_dir, "/data")
+data_dir
+plot_dir = paste0(main_dir, "/plots")
+plot_dir
+setwd(data_dir)
+getwd()
+```
+
+```{r}
+#load("tidyr_tables.RData")
+flights = nycflights13::flights
+
+```
+
+```{r}
+#arrange(flights,year,month,day)
+```
+# order column data using arrange
+```{r}
+#arrange(flights,year,desc(month),day)
+```
+# create a dataframe with NA values
+```{r}
+NA_df = data.frame(x=c(1,NA,2), y = c(1,2,3))
+```
+# see that NA is at the end
+```{r}
+#arrange(NA_df, desc(x))
+```
+# select on certain columns
+```{r}
+#select(flights, year, month, day)
+```
+# select a range of columns
+```{r}
+#select(flights, year:day)
+```
+# exclude certian columns
+```{r}
+#select(flights, -(year:day))
+```
+# select only specifi columns that end with a key word
+```{r}
+#select(flights, ends_with("delay"))
+```
+
+```{r}
+#flights_sml = select(flights, year:day, ends_with("delay"), distance, air_time)\
+#flights_sml
+```
+# create new/calcutaed fields/columns
+```{r}
+#mutate(flights_sml, gain=arr_delay-dep_delay, speed=distance/air_time * 60)
+```
+# return only new/calculated columns 
+```{r}
+#transmute(flights_sml, gain=arr_delay-dep_delay, speed=distance/air_time * 60)
+```
+# useful lag function w/ transmute
+```{r}
+#transmute(flights, arr_delay, lead(arr_delay))
+```
+# ranking using percent_rank
+```{r}
+#?dplyr::ranking
+#x <- c(3,1,5,2,2)
+#row_number(x)
+#percent_rank(x)
+```
+# summarise function to get mean w/o NA values
+```{r}
+#summarise(flights, delay=mean(dep_delay, na.rm = T))
+```
+# group by function
+```{r}
+#by_day = group_by(flights, year, month, day)
+#by_day
+```
+# using these together 
+```{r}
+#summarise(by_day, delay = mean(dep_delay, na.rm = T))
+```
+# group by destination and average by distance and delay
+```{r}
+#by_dest = group_by(flights, dest)
+
+#delay = summarise(by_dest, count=n(), dist=mean(distance, na.rm = T), delay=mean(arr_delay, na.rm = T))
+
+#delay = filter(delay, count>20, dest != "HNL")
+
+#delay
+```
+# now with pipes!!
+```{r}
+#delay = flights %>% group_by (dest) %>% 
+#  summarise(count=n(), dist=mean(distance, na.rm = T), delay=mean(arr_delay, na.rm = T))
+#delay
+```
+# w/ NA included (another example)
+```{r}
+# flights %>% group_by(year, month, day) %>%
+  #summarise(mean=mean(dep_delay))
+```
+# w/o NA included (another example)
+```{r}
+#flights %>% group_by(year, month, day) %>%
+#  summarise(mean=mean(dep_delay, na.rm = T))
+```
+# with count function ( = n()) included
+```{r}
+#flights %>% group_by(year, month, day) %>%
+#  summarise(mean=mean(dep_delay, na.rm = T), n = n())
+```
+# using count another way (( =n())
+```{r}
+#flights %>% count(day)
+```
+
+```{r}
+#flights %>% group_by(year, month) %>% 
+#  summarise(first=min(dep_time, na.rm = T), last=max(dep_time, na.rm = T))
+```
+
+```{r}
+#min(flights$dep_time, na.rm = T) #1
+#max(flights$dep_time, na.rm = T) #2400
+```
+
+# find not cancelled flights (where !is.na of dep_time = not cancelled)
+```{r}
+#flights %>% 
+#  filter(!is.na(dep_time)) %>% 
+#  group_by(year, month, day) %>% 
+#  summarise(first = min(dep_time), last = max(dep_time))
+```
+# using distinct to count unique departure times on year, month, day
+```{r}
+#not_cancelled %>% group_by(year,month,day) %>% summarise(flights_that_take_off=n_distinct(dep_time))
+```
+# ungroup to regroup as needed
+```{r}
+#not_cancelled %>% ungroup() %>%
+#  group_by(year,month,day) %>%
+#  summarise(flights_by_year = n_distinct(dep_time))
+  
+```
+# bad data across two columns 
+```{r}
+#year_country
+```
+
+# gather function
+```{r}
+#year_country %>%
+#  gather("1999","2000", key = "year", value ="cases")
+```
+# by range from column 2 to column 3
+```{r}
+#year_country %>%
+#gather(2:3, key = "year", value="cases")
+```
+# bad data in key column
+```{r}
+#key_value_country
+```
+# using spread to separate key and value columns
+```{r}
+#key_value_country %>% spread(key=key, value = value)
+```
+# spread function to spread case and population
+```{r}
+#spread(key_value_country, key=key, value=value)
+```
+# seperate rate into cases and polation by identifying '/'
+```{r}
+#rate_country %>% 
+#  separate(rate, into=c("cases", "population"), sep="/")
+#rate_country
+```
+# another example of separate usign index of character
+```{r}
+#ex_tables = rate_country %>% 
+#  separate(year, into=c("century", "year"), sep=2, convert = T)
+#ex_tables
+```
+# unit to columns of data (sep = "_" is defualt)
+```{r}
+#ex_tables %>% 
+#  unite(time, century, year, sep="")
+```
+

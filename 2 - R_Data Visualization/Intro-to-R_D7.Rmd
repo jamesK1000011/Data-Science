@@ -1,0 +1,208 @@
+---
+title: "Intro to R_D7"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Set up code for ui.r file
+```{r}
+# Get working directory
+#session_info = sessionInfo()
+
+#platform = session_info$platform
+#directory = "af-werx"
+
+#if(length(grep("linux|apple", platform)) > 0){
+#  Sys.getenv("USER")
+#  dir = paste0("~/Desktop/", directory)
+#}else{
+#  username = Sys.getenv("USERNAME")
+#  dir=paste0("C:/Users/", username, "/Desktop/", directory)
+#}
+
+# Set the working directory to data directory
+#data_dir = paste0(dir, "/data")
+#setwd(data_dir)
+
+# Load the shiny package
+#library(shiny)
+
+
+# Creae ui.r
+#ui <- fluidPage(
+#)
+```
+# set up code server.r file
+```{r}
+# Get working directory
+#session_info = sessionInfo()
+
+#platform = session_info$platform
+#directory = "af-werx"
+
+#if(length(grep("linux|apple", platform)) > 0){
+#  Sys.getenv("USER")
+#  dir = paste0("~/Desktop/", directory)
+#}else{
+#  username = Sys.getenv("USERNAME")
+#  dir=paste0("C:/Users/", username, "/Desktop/", directory)
+# }
+
+# Set the working directory to data directory
+#data_dir = paste0(dir, "/data")
+#setwd(data_dir)
+
+# Load the shiny package
+#library(shiny)
+
+#server <- function(input, output){
+ 
+# }
+```
+
+
+# load shiny packages
+```{r}
+# library(shiny)
+```
+# Create a R.Shiny button
+```{r}
+#actionButton( # create an actionButton element in the US
+#"action", # give a name to the actionButton element
+#label = "Action") # specify a label to be displayed on the action button
+```
+# create a R.Shiny slider
+```{r}
+
+#  sliderInput( # create sliderInput element
+#    "slider1", #give a name to this element
+#    label ="My first slider", # give a header 
+#    min = 0, # specify min val
+#    max = 100, # specify max val
+#    value = 50 # specify default val
+#  )
+```
+# Create a R.shiny slider range
+```{r}
+
+#sliderInput(
+#  "slider1", #give a name to this element
+#  label ="My first slider range", # give a header 
+#  min = 0, # specify min val
+#  max = 100, # specify max val
+#  value = c(40,60) # specify default range
+#)
+```
+
+# create a R.shiny checkbox
+```{r}
+#checkboxInput(
+#  "checkbox", #give a name to this element
+#  label = "choice 1", # give a header 
+#  value = TRUE # specify default selection (TRUE = selected)
+#)
+
+```
+# create a R.shiny checkbox group
+```{r}
+#checkboxGroupInput(
+#  "checkGroup", #give a name to this element
+#  label = "Your three choices", # give a header 
+#  choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3,), # list choices 
+#  selected = c(1,2) # specify default choices 
+#)
+```
+# create a R.shiny numeric input box
+```{r}
+#numericInput(
+#  "num", #give a name to this element
+#  label = "my first numeric input", # give a header 
+#  value = 1 # default value
+#)
+```
+# create a R.shiny text input box
+```{r}
+#textInput(
+#  "test", #give a name to this element
+#  label = "My first text input", # give a header 
+#  value = "switch to windows" #default value
+#)
+```
+# ui.r function for text output
+```{r}
+#textOutput("my_text")
+```
+#server.r function for text output
+```{r}
+#output$my_text <- tenderText({"my first text output"})
+```
+# ui.r function for table output
+```{r}
+#tableOutput("my_table")
+```
+# server.r function for table output
+```{r}
+#output$my_table <- renderTable({loaded_dataset})
+```
+# ui.r function for plot output
+```{r}
+#plotOutput("my_plot")
+```
+# server.r function for plot output
+```{r}
+#output$my_plot <- renderPlot({
+#  plot(loaded_dataset$variable1,loaded_dataset$variable1)
+#})
+```
+# ui.r function for printing text as to console 
+```{r}
+#verbatimTextOutput("my_print")
+```
+# version.r function for printing text as to console 
+```{r}
+#output$my_print <- ({
+#  print(str(loaded_dataset))
+#})
+```
+# Create HTML headers
+```{r}
+#tags$h1("Heading Size 1"), #<? header tag
+#tags$h2("Heading Size 2"), #<? header tag
+```
+# add HTML/CSS div elements
+```{r}
+#div(style="display: vertical?align:top; width: 200px;",
+#    text("element") 
+```
+# add HTML br elemenet
+```{r}
+#tags$br(),
+```
+# add a paragraph element
+```{r}
+#p(style = "optional", "Text in paragraph")
+```
+# add a hyperlink using a and href
+```{r}
+#a("hyperlinklabel", href = "https://www.google.com")
+```
+# add an image
+```{r}
+# place all embedded files in 'www' folder of app
+#img(src='image.png')
+```
+# add a iframe element ui.r fuction
+```{r}
+#uiOutput("Name")
+```
+
+```{r}
+#ensure iframe object is in 'www' folder
+#output$Name <- renderUI((
+#  tags$iframe(style="optional",
+#            src="iframe.obj")
+#))
+
+```
+

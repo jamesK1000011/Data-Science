@@ -1,0 +1,325 @@
+---
+title: "Intro to R_D8"
+output: html_notebook
+---
+# import of 
+```{r}
+CMP = read.csv("ChemicalManufacturingProcess.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+# ui.r function to build reactive histogram with given variable
+```{r}
+ui <- fluidPage{
+  
+  #title of the app
+  titlePanel("Histogram"),
+  
+  #Create a slider input
+  sliderInput(inputId = "records", # input id
+              label = "Number of records:", # input label
+              min = 1,  # min number in slider
+              max = 50, # max number in slider 
+              value = 30) # default value in slider
+
+  # Select input from a list of inputs.
+  selectInput(inputId = "variable", #<­ input ID
+              label = "Choose the variable:", #<­ input label 
+              choices = as.list(names(CMP)), #<­ input list 
+              selected = names(CMP)[1]), #<­ default value of input
+              # Render the output as plot.
+              plotOutput(outputId = "histPlot")
+}
+```
+# server.r function to build reactive histogram with given variable
+```{r}
+server <­ function(input, output) { 
+  
+  # Create a renderPlot function.
+  output$histPlot <­ renderPlot({
+
+  # Get the bin width from user and adjust the bin size.
+  records <­ seq(min(CMP[[input$variable]]), #<­ min bin value is min value of variable chosen
+              max(CMP[[input$variable]]), #<­ max bin value is max value of variable chosen length.out = input$bins + 1) #<­ length is value chosen by the user
+ 
+  # Plot the histogram.
+  hist(CMP[[input$variable]], #<­ variable name chosen by user
+       breaks = records,  #<­ record width
+       col = "salmon", #<­ color of the histogram
+       main = input$variable, #<­ title of the histogram 
+       xlab = input$variable) #<­ x axis label    
+  }) 
+}
+```
+#ui.r for reactive radio button fuction 
+```{r}
+ui <­ fluidPage(
+
+  
+  # Title of the app.
+  titlePanel("Table"),
+
+  # Radio button to choose the option. 
+  radioButtons("option", #<­ input ID
+               "Choose the option", #<­ input 
+               label c("Head", "Tail")), #<­ options
+
+  # Numeric inputs.
+  numericInput("num", #<­ input ID
+               "No of observations", #<­ input label
+                value = 10, #<­ default value
+                min = 1, #<­ minimum value
+                max = nrow(CMP), #<­ maximum value
+                step = 1), #<­ increase in step of
+
+  # Ouput function to display.
+  tableOutput("cmp_table")
+  
+)
+```
+#server.r for reactive radio button fuction 
+```{r}
+server <­ function(input, output) { 
+  
+  # Render output table.
+  output$cmp_table = renderTable(
+
+  # Check input option to display head or tail.
+  if(input$option == 'Head'){
+    head(CMP[1:10], input$num) #<­ display head of the data
+  } 
+  else{
+    tail(CMP[1:10], input$num) #<­ display tail of the data
+  } 
+  )
+}
+```
+# ui.r for scatter and summary outputs
+```{r}
+ui <­ fluidPage(
+
+  # Title of the app
+  titlePanel("Scatter plot and summary of two variables"),
+  
+  # Select input from a list of inputs
+  selectInput(inputId = "variable1",    #<- input1 id
+              label = "Choose the first variable:", #<- input1 label
+              choices = as.list(names(CMP)), #<- input1 list
+              selected = names(CMP)[1]),  #<- default value of input1
+  
+  # Select input from a list of inputs
+  selectInput(inputId = "variable2",  #<- input2 id
+              label = "Choose the second variable:", #<- input2 label
+              choices = as.list(names(CMP)), #<- input2 list
+              selected = names(CMP)[2]),  #<- default value of input2
+  
+  # Render the output as plot
+  plotOutput(outputId = "scatterPlot"),
+  
+  # Print the summary as text output
+  verbatimTextOutput("summary")
+)
+```
+# versio.r for scatter and summary outputs
+```{r}
+server <­ function(input, output) {
+
+  # Create a reactive expression to select two variables choosen by user
+  data <- reactive({
+    CMP %>% select(input$variable1, input$variable2)
+  })
+  
+  # Print output scatter plot
+  output$scatterPlot <- renderPlot({
+    
+    plot(data(),          #<- the new data selected
+         col = "salmon",  #<- color of the plot
+         pch = 16)        #<- plot with filled circles
+    
+  })
+  
+  # Print the summary output
+  output$summary <- renderPrint({
+    
+    summary(data())     #<- print the summary of data
+    
+  })
+  }
+```
+# ui.r for boxplots output
+```{r}
+  # Title of the app
+  titlePanel("Boxplot of the chosen variable"),
+  
+  # Select input from a list of inputs
+  selectInput(inputId = "variable",    #<- input id
+              label = "Choose the first variable:", #<- input label
+              choices = as.list(names(CMP)), #<- input list
+              selected = names(CMP)[1]),  #<- default value of input
+  
+  # Text input to get the title of the plot
+  textInput(inputId = "title",       #<- title input id
+            label = "write a title", #<- input label
+            value = "boxplot"),      #<- default value
+
+  # Render the output as plot
+  plotOutput(outputId = "boxPlot")
+```
+# version.r for boxplot output
+```{r}
+# Print output scatter plot
+  output$boxPlot <- renderPlot({
+    
+    boxplot(CMP[input$variable],        #<- variable name
+            main = isolate(input$title),#<- title name
+            col = "aquamarine3")        #<- color of the plot
+    
+  })
+```
+# ui.r for correlation plot
+```{r}
+# Title of the app
+  titlePanel("Correlation plot"),
+  
+  tags$br(),
+  tags$br(),
+  
+  # Action button to trigger the event
+  actionButton(inputId = "submit",  #<- input id
+               label = "click me"), #<- input label
+  
+  tags$br(),
+  tags$br(),
+  
+  # Render the output as plot
+  plotOutput(outputId = "corr_plot")
+```
+#version.r for correlation plot
+```{r}
+observeEvent(input$submit,   #<- observe the click of action button
+               
+               # Print output scatter plot
+               output$corr_plot <- renderPlot({
+                 
+                 corrplot(cor(CMP[1:10]))
+                 
+               })
+```
+#ui.r for event reactive corrplot
+```{r}
+# Title of the app
+  titlePanel("Correlation plot of choosen variables"),
+  
+  uiOutput("cor_var"), #<- input list of variables to select multiple variables
+  
+  # Action button to trigger the event
+  actionButton(inputId = "submit",  #<- input id
+               label = "Update plot"), #<- input label
+  
+  # Render the output as plot
+  plotOutput(outputId = "corr_plot")
+  
+```
+#ui.r for event reactive corrplot
+```{r}
+  output$cor_var = renderUI({
+    selectInput("cor_var",                         #<- input variable id
+                "Choose Variables",                #<- label to the select input
+                choices = as.list(names(cmp_sub)), #<- choice list
+                multiple = T,                      #<- allow multiple selection
+                selected = names(CMP)[1:2])        #<- default values
+  })
+  
+  data <- eventReactive(input$submit, {
+    cmp_sub[, input$cor_var]     #<- selected input list
+  })
+  
+  output$corr_plot = renderPlot({
+               corrplot(cor(data()))  #,- render plot
+             })
+```
+# ui.r for tabular and layouts 
+```{r}
+
+  # Give the title to the app
+  titlePanel("Understanding layouts"),
+  
+  # Start the tab window
+  tabsetPanel(
+    
+    # Tab 1
+    tabPanel("Histogram 1",                      #<- tab 1 name
+             tags$br(), tags$br(),               #<- html breaks
+             tags$h2("Histogram of variable 1"), #<- title of plot
+             tags$br(), tags$br(),               #<- html breaks
+             
+             # Select input from a list of inputs
+             selectInput(inputId = "variable1",          #<- input id
+                         label = "Choose the variable:", #<- input label
+                         choices = as.list(names(CMP)),  #<- input list
+                         selected = names(CMP)[1]),      #<- default value of input
+             
+             plotOutput("histogram1")          #<- Plot output
+    ),
+    
+    # Tab 2
+    tabPanel("Histogram 2",                       #<- tab 2 name
+             tags$br(), tags$br(),                #<- html breaks
+             tags$h2("Histogram of variable 2"),  #<- title of the plot
+             tags$br(), tags$br(),                #<- html breaks
+             
+             # Select input from a list of inputs
+             selectInput(inputId = "variable2",          #<- input id
+                         label = "Choose the variable:", #<- input label
+                         choices = as.list(names(CMP)),  #<- input list
+                         selected = names(CMP)[1]),      #<- default value of input
+             
+             plotOutput("histogram2")            #<- plot output
+    ),
+    
+    # Tab 3
+    tabPanel("Relationship between two variables",     #<- tab 3 name
+             tags$br(), tags$br(),                     #<- html breaks
+             tags$h2("Scatter plot of two variables"), #<- title of the plot
+             tags$br(), tags$br(),                     #<- html breaks
+             plotOutput("scatter_plot")                #<- plot output
+             
+             )
+    )
+  )
+```
+#version.r for tabular and layouts 
+```{r}
+
+  output$histogram1 = renderPlot({
+    
+    # Plot the histogram
+    hist(CMP[[input$variable1]],      #<- variable name chosen by user
+         col = "salmon",              #<- color of the histogram
+         main = input$variable1,      #<- title of the histogram
+         xlab = input$variable1)      #<- x axis label
+  })
+  
+  output$histogram2 = renderPlot({
+    
+    # Plot the histogram
+    hist(CMP[[input$variable2]],      #<- variable name chosen by user
+         col = "lightblue",           #<- color of the histogram
+         main = input$variable2,      #<- title of the histogram
+         xlab = input$variable2)      #<- x axis label
+  })
+
+  # Print output scatter plot
+  output$scatter_plot <- renderPlot({
+    
+    plot(CMP[[input$variable1]],      #<- variable 1
+         CMP[[input$variable2]],      #<- variable 2
+         col = "salmon",              #<- color of the plot
+         pch = 16,                    #<- plot with filled circles
+         xlab = input$variable1,      #<- x axis label
+         ylab = input$variable2       #<- y axis label
+         )                    
+    
+  })
+  
+```
+

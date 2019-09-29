@@ -1,0 +1,239 @@
+---
+title: "Intro to R"
+output:
+  html_document:
+    df_print: paged
+---
+# Set RNotebook for Root Directory
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "~/Desktop/af-werx/data")
+```
+
+
+# Set Working Directory
+```{r}
+setwd("~/Desktop/af-werx")
+```
+
+# Getting working Directory
+```{r}
+getwd()
+```
+
+# creating and setting the working directory
+```{r}
+main_dir = "~/Desktop/af-werx"
+data_dir = paste0(main_dir, "/data")
+data_dir
+plot_dir = paste0(main_dir, "/plots")
+plot_dir
+setwd(data_dir)
+getwd()
+```
+
+# Read CSV
+```{r}
+temp_heart_rate = read.csv("temp_heart_rate.csv", header = T, stringsAsFactors = F)
+```
+# Structure of the Data
+```{r}
+str(temp_heart_rate)
+```
+
+# View the first rows of the data
+```{r}
+head(temp_heart_rate)
+```
+# View the last rows of the data
+```{r}
+tail(temp_heart_rate)
+```
+# View the whole data
+```{r}
+#View(temp_heart_rate)
+```
+# Subset of data
+```{r}
+temp_heart_subset = temp_heart_rate[1:10,]
+write.csv(temp_heart_subset, "temp_heart_subset.csv", row.names = F)
+```
+# View objects that are in enviroment
+```{r}
+ls()
+```
+# Save enviroment
+```{r}
+save.image(file = "myenv.Rdata")
+```
+# Remove variable
+```{r}
+rm("temp_heart_rate")
+ls()
+```
+# Remove all enviroment
+```{r}
+rm(list=ls())
+```
+# Loading the Enviroment
+```{r}
+load("myenv.RData")
+```
+
+# CMP
+```{r}
+CMP = read.csv("ChemicalManufacturingProcess.csv", header = T, stringsAsFactors = F)
+str(CMP)
+```
+
+# View CMP
+```{r}
+#View(CMP)
+```
+
+# Create CMP Column id Variable
+```{r}
+column_ids = c(1:4, 14:16)
+column_ids
+```
+
+# Create CMP Subset with the column_ids vector
+```{r}
+CMP_Subset = CMP[,column_ids]
+str(CMP_Subset)
+```
+
+# Get Summary
+```{r}
+summary(CMP_Subset)
+```
+
+# Getting Max
+```{r}
+maxproccess01 = max(CMP_Subset$ManufacturingProcess01, na.rm = T)
+maxproccess01
+```
+
+# Checking NAs in Manufacturing Process 01
+```{r}
+is_na = is.na(CMP_Subset$ManufacturingProcess01)
+```
+# Verify NA
+```{r}
+#View(CMP_Subset)
+```
+# Which
+```{r}
+which(is_na)
+```
+# Accessing NA values via subset/index
+```{r}
+CMP_Subset$ManufacturingProcess01[is_na]
+```
+# Calculate the Mean
+```{r}
+mean_process01 = mean(CMP_Subset$ManufacturingProcess01, na.rm = T)
+mean_process01
+```
+# Replace na with mean
+```{r}
+CMP_Subset$ManufacturingProcess01[is_na] = mean_process01
+```
+
+# Calculate MAX again for the whole column
+```{r}
+maxproccess01 = max(CMP_Subset$ManufacturingProcess01)
+maxproccess01
+```
+
+# Repeat the process for process 2,3
+```{r}
+is_na_2 = is.na(CMP_Subset$ManufacturingProcess02)
+mean_process02 = mean(CMP_Subset$ManufacturingProcess02, na.rm = T)
+CMP_Subset$ManufacturingProcess02[is_na_2] = mean_process02
+maxproccess02 = max(CMP_Subset$ManufacturingProcess02)
+maxproccess02
+
+is_na_3 = is.na(CMP_Subset$ManufacturingProcess03)
+mean_process03 = mean(CMP_Subset$ManufacturingProcess03, na.rm = T)
+CMP_Subset$ManufacturingProcess03[is_na_3] = mean_process03
+maxproccess03 = max(CMP_Subset$ManufacturingProcess03)
+maxproccess03
+
+```
+# Mean of Yield
+```{r}
+yield_mean = mean(CMP$Yield)
+yield_mean
+```
+# Create new Column
+```{r}
+# if yield is more or equal than the mean then write above_average in new_field
+# else write below_average
+CMP$new_yield = ifelse(CMP$Yield >= yield_mean, "Above_Average", "Below_Average")
+head(CMP[,c("Yield", "new_yield")])
+tail(CMP[,c("Yield", "new_yield")])
+write.csv(CMP[,c("Yield", "new_yield")], "newyield.csv") # save it to a csv file
+```
+
+
+
+```{r}
+CMP_Subset_variable = colnames(CMP_Subset)
+
+start = 3
+end = 6
+
+for(i in start:end){
+  print(CMP_Subset_variable[i])
+}
+```
+# Hello World Function
+```{r}
+PrintHelloWorld = function(name){
+  hello = paste0("hello World ", name)
+  print(hello)
+}
+
+PrintHelloWorld("James")
+```
+# Get Pi Function
+```{r}
+GetPi = function(){
+  pi = 3.141492
+  return(pi)
+
+}
+GetPi()
+```
+# Generic Function to replace dataset's NA with mean
+```{r}
+ImputeNAWithMean = function(dataset){
+  
+  for(i in 1:ncol(dataset)){
+    is_na = is.na(dataset[,1])
+    if(any(is_na)){
+      na_ids = which(is_na)
+      #mean
+      var_mean = mean(dataset[,i], na.rm = T)
+      dataset[na_ids,i] = var_mean
+      message = paste0("replacing NA with mean:", colnames(dataset)[i])
+      print(message)
+    }
+  }
+  return(dataset)
+}
+#sample dataset inputted into function
+CMP_subset = CMP[, c(1:4), 14:16]
+CMP_subset_imputed = ImputeNAWithMean(CMP_subset)
+#View(CMP_subset_imputed)
+```
+#sample dataset inputted into function
+```{r}
+CMP_subset = CMP[, c(1:4), 14:16]
+CMP_subset_imputed = ImputeNAWithMean(CMP_subset)
+#View(CMP_subset_imputed)
+
+```
+
+
